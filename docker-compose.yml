@@ -1,0 +1,33 @@
+version: "3.9"
+
+services:
+  web:
+    build: .
+    ports:
+      - "${WEB_PORT}:8000"
+    extra_hosts:
+      - "localhost:host-gateway"
+    environment:
+      - TZ=${TZ}
+      - PG_PORT=${PG_PORT}
+      - SQLALCHEMY_DATABASE_URI=${SQLALCHEMY_DATABASE_URI}
+    depends_on:
+      - postgresql
+
+  postgresql:
+    image: postgres:13-alpine
+    restart: always
+    ports:
+      - "${PG_OUT_PORT}:${PG_PORT}"
+    environment:
+      - TZ=${TZ}
+      - PGTZ=${PGTZ}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+
+volumes:
+  postgres_data:
+    driver: local

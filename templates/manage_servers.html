@@ -1,0 +1,180 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} PM2 Dashboard {% endblock %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+<!-- [ Main Content ] start -->
+<div class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content">
+                <div class="main-body">
+                    <div class="page-wrapper">
+                        {% with default_msg="", close_btn=true %}
+                        {% include 'alert.html' %}
+                        {% endwith %}
+                        <div class="row">
+                            {% for row in servers_list %}
+                            <div class="col-md-4 col-lg-4 col-xl-3">
+                                <div class="card" style="max-width: 20rem;">
+                                    <div class="card-header bg-transparent">
+                                        <div class="row align-items-center justify-content-center">
+                                            <div class="col-auto">
+                                                <h6 class="mb-0">
+                                                    {{ row.name }}
+                                                </h6>
+                                            </div>
+                                            <div class="col text-right">
+                                                <i class="fa fa-duotone fa-server text-primary f-36"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="card-text">
+                                            {{ row.url }}
+                                        </p>
+                                    </div>
+                                    <div class="card-footer bg-transparent">
+                                        <div class="row">
+                                            <a type="button" class="btn btn-dark text-white" data-toggle="modal"
+                                                data-target="#editModal{{row.id}}" }}>Edit</a>
+                                            <a type="button" class="btn btn-danger text-white" data-toggle="modal"
+                                                data-target="#deleteModal{{row.id}}">Delete</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Delete server modal -->
+                            <div class="modal fade" id="deleteModal{{row.id}}" tabindex="-1" role="dialog"
+                                aria-labelledby="deleteModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="deleteModalLabel">Delete server</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>Are you sure you want to delete 
+                                                <span class="font-weight-bold badge badge-danger">{{row.name}}</span>
+                                                ?
+                                            </p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary shadow-2 mb-2"
+                                                data-dismiss="modal">Cancel</button>
+                                            <a type="button" class="btn btn-danger"
+                                                href={{url_for('manage_servers_bp.delete_server', id=row.id) }}>Delete</a>
+                                        </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Edit server modal -->
+                            <div class="modal fade" id="editModal{{row.id}}" tabindex="-1" role="dialog"
+                                aria-labelledby="editModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="editModalLabel">Edit server</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <form action={{ url_for('manage_servers_bp.edit_server') }} method="post">
+                                            <div class="modal-body">
+                                                {{ edit_form.csrf_token() }}
+                                                {{ edit_form.server_id(value=row.id) }}
+
+                                                <div class="form-floating mb-3">
+                                                    <label for="servername">Server Name</label>
+                                                    {{ edit_form.server_name(placeholder="Enter server name",
+                                                    class="form-control", value=row.name) }}
+                                                </div>
+
+                                                <div class="form-floating mb-3">
+                                                    <label for="serverurl">Server URL</label>
+                                                    <div class="input-group mb-2">
+                                                        {{ edit_form.server_url(placeholder="http://ip:port",
+                                                        class="form-control", value=row.url) }}
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary shadow-2 mb-2"
+                                                    data-dismiss="modal">Close</button>
+                                                {{ edit_form.submit(class="btn btn-primary shadow-2 mb-2")}}
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {% endfor %}
+                            <div class="col-md-4 col-lg-4 col-xl-3">
+                                <div class="card" style="max-width: 20rem;border-style: dashed">
+                                    <div class="card-body text-center">
+                                        <a class="btn" type="button" data-toggle="modal" data-target="#createModal"
+                                            style="font-size: 780%;">+</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Add new server modal -->
+                        <div class="modal fade" id="createModal" tabindex="-1" role="dialog"
+                            aria-labelledby="createModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="createModalLabel">Add new server</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <form action={{ url_for('manage_servers_bp.create_server') }} method="post">
+                                        <div class="modal-body">
+                                            {{ add_form.csrf_token() }}
+
+                                            <div class="form-floating mb-3">
+                                                <label for="servername">Server Name</label>
+                                                {{ add_form.server_name(placeholder="Enter server name",
+                                                class="form-control") }}
+                                            </div>
+
+                                            <div class="form-floating mb-3">
+                                                <label for="serverurl">Server URL</label>
+                                                <div class="input-group mb-2">
+                                                    {{ add_form.server_url(placeholder="http://ip:port",
+                                                    class="form-control") }}
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary shadow-2 mb-2"
+                                                data-dismiss="modal">Close</button>
+                                            {{ add_form.submit(class="btn btn-primary shadow-2 mb-2")}}
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- [ Main Content ] end -->
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

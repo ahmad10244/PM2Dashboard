@@ -1,0 +1,44 @@
+<!-- [ navigation menu ] start -->
+<nav class="pcoded-navbar">
+    <div class="navbar-wrapper">
+        <div class="navbar-brand header-logo">
+            <a href="/" class="b-brand">
+                <img src="/static/images/pm2.svg" width="200%" alt="PM2">
+            </a>
+            <a class="mobile-menu" id="mobile-collapse" href="javascript:"><span></span></a>
+        </div>
+        <div class="navbar-content scroll-div">
+            <ul class="nav pcoded-inner-navbar">
+                <li class="nav-item pcoded-menu-caption">
+                    <label>Navigation</label>
+                </li>
+                <li class="nav-item {% if 'index' in segment %} active {% endif %}">
+                    <a href="/" class="nav-link ">
+                        <span class="pcoded-micon">
+                            <i class="feather icon-home"></i>
+                        </span>
+                        <span class="pcoded-mtext">Dashboard</span></a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ url_for('manage_servers_bp.get_server') }}" class="nav-link">
+                        <span class="pcoded-micon">
+                            <i class="feather icon-server"></i>
+                        </span>
+                        <span class="pcoded-mtext">Manage Servers</span>
+                    </a>
+                </li>
+
+                <li class="nav-item ">
+                    <a target="_blank" href="https://github.com/ahmad10244" class="nav-link">
+                        <span class="pcoded-micon">
+                            <i class="feather icon-headphones"></i>
+                        </span>
+                        <span class="pcoded-mtext">Support</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<!-- [ navigation menu ] end -->

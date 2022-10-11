@@ -1,0 +1,61 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} PM2 Dashboard {% endblock %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+<!-- [ Main Content ] start -->
+<div class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content">
+                <div class="main-body">
+                    <div class="page-wrapper">
+                        <!-- [ Main Content ] start -->
+                        {% with default_msg="", close_btn=true %}
+                        {% include 'alert.html' %}
+                        {% endwith %}
+                        <div class="row">
+                            <!--[Servers section] start-->
+                                {% for row in servers_list %}
+                                <div class="col-md-4 col-lg-3 col-xl-3">
+                                    <div class="card" style="max-width: 20rem;">
+                                        <div class="card-header bg-transparent">
+                                            <div class="row align-items-center justify-content-center">
+                                                <div class="col-auto">
+                                                    <h6 class="mb-0">
+                                                        {{ row.name }}
+                                                    </h6>
+                                                </div>
+                                                <div class="col text-right">
+                                                    <i class="fa fa-duotone fa-server text-primary f-36"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <p class="card-text">
+                                                {{ row.url }}
+                                            </p>
+                                        </div>
+                                        <div class="card-footer bg-transparent">
+                                            <!-- <button class="btn btn-outline-info m-0">Show</button> -->
+                                            <a href="{{ url_for('server_bp.show_server_pm2_processes', id=row.id) }}" class="btn btn-outline-info m-0">Show</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            <!--[Servers section] end-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- [ Main Content ] end -->
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

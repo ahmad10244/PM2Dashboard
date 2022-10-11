@@ -1,0 +1,57 @@
+{% extends "layouts/base-fullscreen.html" %}
+
+{% block title %} Register {% endblock %}
+
+{% block content %}
+<div class="auth-wrapper">
+    <div class="auth-content">
+        <div class="auth-bg">
+            <span class="r"></span>
+            <span class="r s"></span>
+            <span class="r s"></span>
+            <span class="r"></span>
+        </div>
+        <div class="card">
+            <div class="card-body text-center">
+                <div class="mb-4">
+                    <i class="feather icon-unlock auth-icon"></i>
+                </div>
+
+                <h3 class="mb-4">Register</h3>
+
+                <span class="mb-0 text-muted">
+                    {% with default_msg="Enter your information", close_btn=false %}
+                    {% include 'alert.html' %}
+                    {% endwith %}
+                </span>
+
+                <br />
+
+                <form role="form" method="post" action={{ url_for('auth_bp.register') }}>
+                    {{ form.csrf_token() }}
+
+                    <div class="input-group mb-3">
+                        {{ form.full_name(class="form-control") }}
+                    </div>
+
+                    <div class="input-group mb-3">
+                        {{ form.username(placeholder="Username", class="form-control") }}
+                    </div>
+
+                    <div class="input-group mb-3">
+                        {{ form.password(class="input form-control", type="password") }}
+                    </div>
+
+                    <div class="input-group mb-4">
+                        {{ form.role(class="form-control", ) }}
+                    </div>
+
+                    {{ form.submit(class="btn btn-primary shadow-2 mb-4")}}
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
