@@ -225,5 +225,5 @@ makefile          text
 # Ignore files (like .npmignore or .gitignore)
 *.*ignore         text
 
-## Language
+# Language
 static/** linguist-vendored
