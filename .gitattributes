@@ -226,5 +226,4 @@ makefile          text
 *.*ignore         text
 
 ## Language
-static/* linguist-vendored
-templates/* linguist-vendored
+static/** linguist-vendored
