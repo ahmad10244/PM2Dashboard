@@ -226,7 +226,10 @@ makefile          text
 *.*ignore         text
 
 ## Language
-* linguist-language=Python
+*.py linguist-language=Python
+*.html linguist-language=HTML
+*.css linguist-language=CSS
+*.js linguist-language=JavaScript
 
 *.html linguist-detectable=false
 *.css linguist-detectable=false
