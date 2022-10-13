@@ -226,10 +226,5 @@ makefile          text
 *.*ignore         text
 
 ## Language
-*.py linguist-language=Python
-*.html linguist-language=HTML
-*.css linguist-language=CSS
-*.js linguist-language=JavaScript
-
-*.html linguist-detectable=false
-*.css linguist-detectable=false
+static/* linguist-vendored
+templates/* linguist-vendored
