@@ -30,6 +30,7 @@ and connect Dashboard app to postgresql container with `SQLALCHEMY_DATABASE_URI`
 
 - `WEB_PORT`: Port to access Dashboard.
 - `PG_PORT`: Postgresql port that use to check if postgresql container started completely.
+- `SECRET_KEY`: Random string with symbols, digits, chars, ... to use for flask SECRET_KEY
 - `SQLALCHEMY_DATABASE_URI`: Postgresql URI for using in app db connections. \
     format: `postgresql://username:password@host:port/database`
 - `POSTGRES_USER`: Username that used for creating postgresql container.
@@ -74,6 +75,7 @@ pip install -r requirements.txt
 ``` bash
 export FLASK_DEBUG=1
 export SQLALCHEMY_DATABASE_URI=postgresql://username:password@host:port/database
+export SECRET_KEY='random string with symbols, digits, chars, ...'
 flask db upgrade
 ```
 
