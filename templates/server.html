@@ -9,6 +9,38 @@
     table td {
         text-align: center;
     }
+
+    .htmx-indicator{
+        opacity: 0;
+        position: absolute;
+        margin-left: auto;
+        margin-right: auto;
+        left: 0;
+        right: 0;
+        top: 5px;
+        text-align: center;
+        transition: opacity 100ms ease-in;
+    }
+    .htmx-request .htmx-indicator{
+        opacity: 1;
+        position: absolute;
+        margin-left: auto;
+        margin-right: auto;
+        left: 0;
+        right: 0;
+        top: 5px;
+        text-align: center;
+    }
+    .htmx-request.htmx-indicator{
+        opacity: 1;
+        position: absolute;
+        margin-left: auto;
+        margin-right: auto;
+        left: 0;
+        right: 0;
+        top: 5px;
+        text-align: center;
+    }
 </style>
 {% endblock stylesheets %}
 
