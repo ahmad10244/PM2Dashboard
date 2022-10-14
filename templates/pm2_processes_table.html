@@ -1,0 +1,77 @@
+<div class="row" id="pm2ListTb">
+    <div class="col-xl-12">
+        <div class="card">
+            <div class="card-header">
+                <h5>PM2 Process List</h5>
+                <div class="d-block m-t-5" id="lastUpdate">
+                    Last Update: {{ last_update }}
+                </div>
+            </div>
+            <div class="card-block table-border-style">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>PM2 Id</th>
+                                <th>Name</th>
+                                <th>Namespace</th>
+                                <th>Version</th>
+                                <th>Mode</th>
+                                <th>PID</th>
+                                <th>Uptime</th>
+                                <th><i class="feather icon-refresh-cw"></i></th>
+                                <th>Status</th>
+                                <th>User</th>
+                                <th>Watching</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for process in pm2_process_list %}
+                            <tr>
+                                <td>{{ process.pm_id }}</td>
+                                <td>{{ process.name }}</td>
+                                <td>{{ process.pm2_env.namespace }}</td>
+                                <td>{{ process.pm2_env.version }}</td>
+                                <td>{{ process.pm2_env.exec_mode }}</td>
+                                <td>{{ process.pid }}</td>
+                                <td>{{ process.pm2_env.pm_uptime }}</td>
+                                <td>{{ process.pm2_env.restart_time }}</td>
+                                <td>
+                                    <h5>
+                                        <span
+                                            class="badge badge-{{ 'success' if process.pm2_env.status == 'online' else 'danger' }}">
+                                            {{ process.pm2_env.status }}
+                                        </span>
+                                    </h5>
+                                </td>
+                                <td>{{ process.pm2_env.username }}</td>
+                                <td>{{ process.pm2_env.watch }}</td>
+                                <td>
+                                    <a hx-get={{ action_url + "&pname=" + process.name + "&action=start" }}
+                                        hx-trigger="click" hx-target="#pm2ListTb" hx-indicator="#spinner">
+                                        <i class="fa fa-duotone fa-play text-success f-18 mr-1"></i>
+                                    </a>
+                                    <a hx-get={{ action_url + "&pname=" + process.name + "&action=restart" }}
+                                        hx-trigger="click" hx-target="#pm2ListTb" hx-indicator="#spinner">
+                                        <i class="fa feather icon-rotate-cw text-warning f-22 mr-1"></i>
+                                    </a>
+                                    <a hx-get={{ action_url + "&pname=" + process.name + "&action=stop" }}
+                                        hx-trigger="click" hx-target="#pm2ListTb" hx-indicator="#spinner">
+                                        <i class="fa fa-duotone fa-stop text-danger f-18 mr-1"></i>
+                                    </a>
+                                    <span style="border-right: 3px solid gray" class="mr-2 ml-1"></span>
+                                    <a hx-get={{ action_url + "&pname=" + process.name + "&action=delete" }}
+                                        hx-trigger="click" hx-target="#pm2ListTb" hx-indicator="#spinner">
+                                        <i class="fa fa-solid fa-trash text-danger f-18 mr-1"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

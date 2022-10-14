@@ -26,28 +26,29 @@
 
                         {% if refresh_interval is not none %}
                         <div hx-get="{{url_for('server_bp.reload_server_pm2_processes', id=server_id) }}"
-                             hx-select-oob="#lastUpdate,#pm2ListTbody"
                              hx-trigger="every {{ refresh_interval }}" 
-                             hx-target="#pm2ListTbody">
+                             hx-target="#pm2ListTb"
+                             hx-indicator="#spinner">
                         </div>
                         {% endif %}
-                        
-                            <div class="pcoded-inner-content">
-                                <!-- [ breadcrumb ] start -->
-                                <div class="page-header">
-                                    <div class="page-block">
-                                        <div class="row align-items-center">
-                                            <div class="col-md-12">
-                                                <ul class="breadcrumb">
-                                                    <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
-                                                    <li class="breadcrumb-item active">{{ server_name }}</li>
-                                                </ul>
-                                            </div>
+
+                        <div class="pcoded-inner-content">
+                            <!-- [ breadcrumb ] start -->
+                            <div class="page-header">
+                                <div class="page-block">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-12">
+                                            <ul class="breadcrumb">
+                                                <li class="breadcrumb-item"><a href="/"><i
+                                                            class="feather icon-home"></i></a></li>
+                                                <li class="breadcrumb-item active">{{ server_name }}</li>
+                                            </ul>
                                         </div>
                                     </div>
                                 </div>
-                                <!-- [ breadcrumb ] end -->
                             </div>
+                            <!-- [ breadcrumb ] end -->
+                        </div>
 
                         <!-- <div class="row">
                             <div class="col-xl-12">
@@ -93,12 +94,12 @@
                                     <input type="text" class="input text-center" style="width: 18%"
                                         value="{{ refresh_interval if refresh_interval is not none else 'Off' }}"
                                         disabled>
-                                    <button class="btn btn-secondary ml-2 mr-0"
+                                    <button class="btn btn-secondary ml-2 mr-0" 
                                             type="button"
                                             hx-get="{{url_for('server_bp.reload_server_pm2_processes', id=server_id) }}"
-                                            hx-select-oob="#lastUpdate,#pm2ListTbody"
                                             hx-trigger="click"
-                                            hx-target="#pm2ListTbody">
+                                            hx-target="#pm2ListTb"
+                                            hx-indicator="#spinner">
                                         <i class="feather icon-refresh-cw mr-0"></i>
                                     </button>
                                 </div>
@@ -106,60 +107,10 @@
                         </div>
 
                         <!-- [ Main Content ] start -->
-                        <div class="row">
-                            <div class="col-xl-12">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h5>PM2 Process List</h5>
-                                        <div class="d-block m-t-5" id="lastUpdate">Last Update: {{ lastUpdate }}</div>
-                                    </div>
-                                    <div class="card-block table-border-style">
-                                        <div class="table-responsive">
-                                            <table class="table table-striped">
-                                                <thead>
-                                                    <tr>
-                                                        <th>PM2 Id</th>
-                                                        <th>Name</th>
-                                                        <th>Namespace</th>
-                                                        <th>Version</th>
-                                                        <th>Mode</th>
-                                                        <th>PID</th>
-                                                        <th>Uptime</th>
-                                                        <th><i class="feather icon-refresh-cw"></i></th>
-                                                        <th>Status</th>
-                                                        <th>User</th>
-                                                        <th>Watching</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody id="pm2ListTbody">
-                                                    {% for process in pm2_process_list %}
-                                                    <tr>
-                                                        <td>{{ process.pm_id }}</td>
-                                                        <td>{{ process.name }}</td>
-                                                        <td>{{ process.pm2_env.namespace }}</td>
-                                                        <td>{{ process.pm2_env.version }}</td>
-                                                        <td>{{ process.pm2_env.exec_mode }}</td>
-                                                        <td>{{ process.pid }}</td>
-                                                        <td>{{ process.pm2_env.pm_uptime }}</td>
-                                                        <td>{{ process.pm2_env.restart_time }}</td>
-                                                        <td>
-                                                            <h5>
-                                                                <span
-                                                                    class="badge badge-{{ 'success' if process.pm2_env.status == 'online' else 'danger' }}">
-                                                                    {{ process.pm2_env.status }}
-                                                                </span>
-                                                            </h5>
-                                                        </td>
-                                                        <td>{{ process.pm2_env.username }}</td>
-                                                        <td>{{ process.pm2_env.watch }}</td>
-                                                    </tr>
-                                                    {% endfor %}
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        <div id="pm2ListTb">
+                            {% with last_update=lastUpdate, pm2_process_list=pm2_process_list, action_url=action_url %}
+                            {% include 'pm2_processes_table.html' %}
+                            {% endwith %}
                         </div>
                     </div>
                 </div>
